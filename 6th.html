@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Elite Study OS - VIP Playlist & Schedule Edition</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Cairo) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Cairo', sans-serif; background-color: #09090b; color: #f4f4f5; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #09090b; }
+        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+        .tab-content { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="h-screen overflow-hidden flex select-none">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-[#18181b] border-l border-[#27272a] flex flex-col justify-between p-4 z-20 shrink-0">
+        <div>
+            <!-- Logo -->
+            <div class="flex items-center gap-3 px-2 py-4 mb-6 border-b border-[#27272a]">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                    <i class="fa-solid fa-graduation-cap text-black font-bold text-sm"></i>
+                </div>
+                <div>
+                    <h1 class="font-black text-sm tracking-wide text-white">ELITE STUDY OS</h1>
+                    <p class="text-[10px] text-emerald-400 font-bold">نظام قفل الـ 100 المتكامل</p>
+                </div>
+            </div>
+
+            <!-- Nav Links -->
+            <nav class="space-y-1">
+                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all bg-emerald-500 text-black shadow-lg shadow-emerald-500/10">
+                    <i class="fa-solid fa-calendar-days w-5 text-center"></i> الجداول التنفيذية اليومية
+                </button>
+                <button onclick="switchTab('weekly')" id="btn-weekly" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all text-zinc-400 hover:bg-zinc-800 hover:text-white">
+                    <i class="fa-solid fa-chart-gantt w-5 text-center text-amber-400"></i> الخطة والجدول الأسبوعي
+                </button>
+                <button onclick="switchTab('subjects')" id="btn-subjects" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all text-zinc-400 hover:bg-zinc-800 hover:text-white">
+                    <i class="fa-solid fa-play-jwt w-5 text-center text-teal-400"></i> المنهج وقوائم يوتيوب
+                </button>
+                <button onclick="switchTab('errors')" id="btn-errors" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all text-zinc-400 hover:bg-zinc-800 hover:text-white">
+                    <i class="fa-solid fa-brain w-5 text-center text-rose-400"></i> بنك الأخطاء والامتحانات
+                </button>
+            </nav>
+        </div>
+
+        <!-- Progress Footer -->
+        <div class="bg-[#27272a]/30 p-3 rounded-xl border border-[#27272a]">
+            <div class="flex items-center justify-between text-xs mb-1">
+                <span class="text-zinc-400 font-medium">التقفيل الكلي للمنهج</span>
+                <span id="global-progress-txt" class="font-black text-emerald-400">0%</span>
+            </div>
+            <div class="w-full bg-zinc-800 h-2 rounded-full overflow-hidden">
+                <div id="global-progress-bar" class="bg-gradient-to-r from-teal-500 to-emerald-500 h-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 h-screen overflow-y-auto p-6 md:p-8 relative">
+        
+        <!-- ================= 1. DASHBOARD & DAILY HOURLY PLANNER ================= -->
+        <section id="tab-dashboard" class="tab-content space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div class="lg:col-span-2 bg-[#18181b] p-6 rounded-2xl border border-[#27272a] flex flex-col justify-center">
+                    <h2 class="text-2xl font-black text-white mb-1">الجدول الزمني الساعاتي الصارم ⏱️</h2>
+                    <p class="text-sm text-zinc-400">مقسم بالدقائق لضمان أعلى مستويات التركيز البشري وتجنب المماطلة تماماً.</p>
+                </div>
+                <div class="bg-gradient-to-b from-zinc-900 to-black p-5 rounded-2xl border border-zinc-800 flex flex-col items-center justify-center text-center">
+                    <div id="countdown" class="text-2xl font-mono font-black text-rose-400">000d 00h 00m</div>
+                    <div class="text-[10px] text-zinc-500 font-bold mt-1 tracking-wider uppercase">العد التنازلي للملحمة الوزارية</div>
+                </div>
+            </div>
+
+            <!-- Pomodoro & Daily Rituals -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Pomodoro -->
+                <div class="bg-[#18181b] p-6 rounded-2xl border border-[#27272a] flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-bold text-base text-white mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-stopwatch text-amber-400 animate-pulse"></i> مؤقت بومودورو المدمج
+                        </h3>
+                        <div class="text-center my-4">
+                            <div id="timer-display" class="text-4xl font-mono font-black text-white bg-black/40 py-3 rounded-xl border border-zinc-800">25:00</div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="startTimer()" class="bg-emerald-500 hover:bg-emerald-600 text-black font-bold py-2 rounded-lg text-xs transition-all">ابدأ</button>
+                        <button onclick="pauseTimer()" class="bg-zinc-700 hover:bg-zinc-600 text-white font-bold py-2 rounded-lg text-xs transition-all">إيقاف</button>
+                        <button onclick="resetTimer()" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-400 font-bold py-2 rounded-lg text-xs transition-all">إعادة</button>
+                    </div>
+                </div>
+
+                <!-- Habits Tracker -->
+                <div class="lg:col-span-2 bg-[#18181b] p-6 rounded-2xl border border-[#27272a]">
+                    <h3 class="font-bold text-base text-white mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-check text-teal-400"></i> عادات التفوق اليومية الثابتة
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <label class="flex items-center gap-3 p-3 bg-black/20 rounded-xl border border-zinc-800/60 cursor-pointer">
+                            <input type="checkbox" id="habit-1" onchange="saveHabits()" class="w-4 h-4 rounded text-emerald-500 bg-zinc-900 border-zinc-700 focus:ring-0">
+                            <span class="text-xs font-semibold text-zinc-300">النهوض الفجري والدراسة بذهن صافي</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 bg-black/20 rounded-xl border border-zinc-800/60 cursor-pointer">
+                            <input type="checkbox" id="habit-2" onchange="saveHabits()" class="w-4 h-4 rounded text-emerald-500 bg-zinc-900 border-zinc-700 focus:ring-0">
+                            <span class="text-xs font-semibold text-zinc-300">إغلاق ورمي الهاتف خارج الغرفة</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 bg-black/20 rounded-xl border border-zinc-800/60 cursor-pointer">
+                            <input type="checkbox" id="habit-3" onchange="saveHabits()" class="w-4 h-4 rounded text-emerald-500 bg-zinc-900 border-zinc-700 focus:ring-0">
+                            <span class="text-xs font-semibold text-zinc-300">تدوين الأخطاء الجديدة ببنك الأخطاء</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 bg-black/20 rounded-xl border border-zinc-800/60 cursor-pointer">
+                            <input type="checkbox" id="habit-4" onchange="saveHabits()" class="w-4 h-4 rounded text-emerald-500 bg-zinc-900 border-zinc-700 focus:ring-0">
+                            <span class="text-xs font-semibold text-zinc-300">النوم الفوري الساعة 10:30 مساءً</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interative Daily Schedule Split -->
+            <div class="bg-[#18181b] p-6 rounded-2xl border border-[#27272a]">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-lg text-white flex items-center gap-2">
+                        <i class="fa-solid fa-clock text-emerald-400"></i> التوزيع الساعاتي لليوم الدراسي المثالي
+                    </h3>
+                    <span id="hourly-ratio" class="text-xs bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full font-bold">0 / 6 فترات</span>
+                </div>
+                <div class="space-y-2">
+                    <label class="flex items-center justify-between p-3.5 bg-black/30 rounded-xl border border-zinc-800 hover:border-zinc-700 transition-all cursor-pointer">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" id="hour-slot-1" onchange="saveHourlySlots()" class="w-4 h-4 text-emerald-500 bg-zinc-900 border-zinc-700 rounded focus:ring-0">
+                            <div>
+                                <span class="block text-sm font-bold text-white">الفترة 1: الحفظيات والمواد الإنسانية المركزة</span>
+                                <span class="text-xs text-zinc-400">دراسة صفحات جديدة من الأحياء، الأدب، أو حفظ قواعد العربي بتركيز فولاذي.</span>
+                            </div>
+                        </div>
+                        <span class="text-xs font-mono bg-zinc-800 px-2 py-1 rounded text-zinc-300 shrink-0">05:00 AM - 07:30 AM</span>
+                    </label>
+
+                    <label class="flex items-center justify-between p-3.5 bg-black/30 rounded-xl border border-zinc-800 hover:border-zinc-700 transition-all cursor-pointer">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" id="hour-slot-2" onchange="saveHourlySlots()" class="w-4 h-4 text-emerald-500 bg-zinc-900 border-zinc-700 rounded focus:ring-0">
+                            <div>
+                                <span class="block text-sm font-bold text-white">الفترة 2: طحن وتفكيك الرياضيات / الكيمياء (المسائل)</span>
+                                <span class="text-xs text-zinc-400">مشاهدة محاضرات المدرس المقترح، حل الأمثلة والتمارين بيدك خطوة بخطوة.</span>
+                            </div>
+                        </div>
+                        <span class="text-xs font-mono bg-zinc-800 px-2 py-1 rounded text-zinc-300 shrink-0">08:30 AM - 11:30 AM</span>
+                    </label>
+
+                    <label class="flex items-center justify-between p-3.5 bg-black/30 rounded-xl border border-zinc-800 hover:border-zinc-700 transition-all cursor-pointer">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" id="hour-slot-3" onchange="saveHourlySlots()" class="w-4 h-4 text-emerald-500 bg-zinc-900 border-zinc-700 rounded focus:ring-0">
+                            <div>
+                                <span class="block text-sm font-bold text-white">قيلولة إجبارية صحية لإعادة تصفير الإجهاد العصبي</span>
+                                <span class="text-xs text-zinc-400">نوم حقيقي هادئ وتفريغ كامل للذهن لشحن ناقلات الدماغ.</span>
+                            </div>
+                        </div>
+                        <span class="text-xs font-mono bg-zinc-800 px-2 py-1 rounded text-zinc-400 shrink-0">11:30 AM - 01:30 PM</span>
+                    </label>
+
+                    <label class="flex items-center justify-between p-3.5 bg-black/30 rounded-xl border border-zinc-800 hover:border-zinc-700 transition-all cursor-pointer">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" id="hour-slot-4" onchange="saveHourlySlots()" class="w-4 h-4 text-emerald-500 bg-zinc-900 border-zinc-700 rounded focus:ring-0">
+                            <div>
+                                <span class="block text-sm font-bold text-white">الفترة 3: الفيزياء / قواعد اللغة الإنكليزية</span>
+                                <span class="text-xs text-zinc-400">السيطرة على كلاميات ومسائل الفيزياء الصعبة وحل القطع الخارجية والقواعد.</span>
+                            </div>
+                        </div>
+                        <span class="text-xs font-mono bg-zinc-800 px-2 py-1 rounded text-zinc-300 shrink-0">01:30 PM - 04:30 PM</span>
+                    </label>
+
+                    <label class="flex items-center justify-between p-3.5 bg-black/30 rounded-xl border border-zinc-800 hover:border-zinc-700 transition-all cursor-pointer">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" id="hour-slot-5" onchange="saveHourlySlots()" class="w-4 h-4 text-emerald-500 bg-zinc-900 border-zinc-700 rounded focus:ring-0">
+                            <div>
+                                <span class="block text-sm font-bold text-white">الفترة 4: تدمير وقفل الأسئلة الوزارية الصارمة</span>
+                                <span class="text-xs text-zinc-400">حل وزاريات الفصول التي درستها اليوم من سنة 2014 إلى 2026 حرفياً.</span>
+                            </div>
+                        </div>
+                        <span class="text-xs font-mono bg-zinc-800 px-2 py-1 rounded text-zinc-300 shrink-0">06:00 PM - 08:30 PM</span>
+                    </label>
+
+                    <label class="flex items-center justify-between p-3.5 bg-black/30 rounded-xl border border-zinc-800 hover:border-zinc-700 transition-all cursor-pointer">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" id="hour-slot-6" onchange="saveHourlySlots()" class="w-4 h-4 text-emerald-500 bg-zinc-900 border-zinc-700 rounded focus:ring-0">
+                            <div>
+                                <span class="block text-sm font-bold text-white">جلسة الاسترجاع النشط الفعالة ومراجعة الثغرات</span>
+                                <span class="text-xs text-zinc-400">مراجعة خاطفة وسريعة لكل ما تم إنجازه اليوم وتثبيت الملاحظات الهامة.</span>
+                            </div>
+                        </div>
+                        <span class="text-xs font-mono bg-zinc-800 px-2 py-1 rounded text-zinc-300 shrink-0">08:30 PM - 10:00 PM</span>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 2. NEW: WEEKLY SPRINT TRACKER TAB ================= -->
+        <section id="tab-weekly" class="tab-content hidden space-y-6">
+            <div class="bg-[#18181b] p-6 rounded-2xl border border-[#27272a]">
+                <h2 class="text-2xl font-black text-white mb-1">خطة التوزيع الأسبوعية التفاعلية (Weekly Sprint System) 📊</h2>
+                <p class="text-sm text-zinc-400 mb-6">نظام أسبوعي متكامل مقسم لإنهاء النسبة الأكبر من المنهج والمواد العلمية في فترة الصيف بكفاءة عالية.</p>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right border-collapse">
+                        <thead>
+                            <tr class="border-b border-zinc-800 text-xs text-zinc-400 bg-zinc-900/40">
+                                <th class="p-3">الأسبوع</th>
+                                <th class="p-3">المستهدفات والمواد العلمية المطلوب إنجازها وقتلها</th>
+                                <th class="p-3 text-center">حالة التقفيل</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-xs text-zinc-300 divide-y divide-zinc-800/40" id="weekly-table-body">
+                            <!-- JS will generate 12 interactive weeks -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 3. SUBJECTS WITH DYNAMIC YOUTUBE LINKS ================= -->
+        <section id="tab-subjects" class="tab-content hidden space-y-6">
+            <div class="bg-[#18181b] p-6 rounded-2xl border border-[#27272a]">
+                <div class="mb-4">
+                    <h2 class="text-2xl font-black text-white">مصفوفة المنهج الشاملة + قوائم التشغيل الفولاذية 📺</h2>
+                    <p class="text-sm text-zinc-400 mt-1">اضغط على زر <span class="text-emerald-400 font-bold">"المحاضرات 📺"</span> بجانب أي موضوع لينقلك فوراً لشرح أفضل مدرسي العراق المعتمدين وزارياً.</p>
+                </div>
+                
+                <div id="subjects-container" class="space-y-4">
+                    <!-- Dynamically Injected with Interactive Buttons -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 4. ERRORS & EXAMS TAB ================= -->
+        <section id="tab-errors" class="tab-content hidden space-y-6">
+            <div class="bg-[#18181b] p-6 rounded-2xl border border-[#27272a]">
+                <h2 class="text-2xl font-black text-white mb-1">دفتر وثغرات الأخطاء الرقمي 🧠</h2>
+                <p class="text-sm text-zinc-400 mb-6">وثّق كل إشارة، قانون، أو كلمة أنقصتك درجة لتراجعها باستمرار وتمنع تكرارها.</p>
+
+                <form id="error-form" onsubmit="addErrorCard(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-black/30 p-4 rounded-xl border border-zinc-800 mb-6">
+                    <div>
+                        <label class="block text-xs font-semibold text-zinc-400 mb-1.5">المادة</label>
+                        <select id="err-subject" class="w-full bg-[#18181b] border border-zinc-700 rounded-lg p-2 text-sm text-white focus:outline-none focus:border-emerald-500">
+                            <option>الرياضيات</option><option>الفيزياء</option><option>الكيمياء</option>
+                            <option>الأحياء</option><option>اللغة العربية</option><option>اللغة الإنكليزية</option>
+                            <option>التربية الإسلامية</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-zinc-400 mb-1.5">وصف الثغرة بالتفصيل</label>
+                        <input type="text" id="err-desc" placeholder="مثال: نسيان إشارة السالب عند التعويض بقانون لنز" required class="w-full bg-[#18181b] border border-zinc-700 rounded-lg p-2 text-sm text-white focus:outline-none focus:border-emerald-500">
+                    </div>
+                    <div class="flex items-end">
+                        <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-black font-bold py-2 px-4 rounded-lg text-sm transition-all shadow-lg shadow-emerald-500/10">
+                            <i class="fa-solid fa-plus ml-1"></i> حفظ الثغرة الآن
+                        </button>
+                    </div>
+                </form>
+
+                <div class="space-y-2" id="errors-list-container"></div>
+            </div>
+
+            <!-- Full Mock Exams Simulator -->
+            <div class="bg-[#18181b] p-6 rounded-2xl border border-[#27272a]">
+                <h2 class="text-xl font-bold text-white mb-2">لوحة نتائج الامتحانات الشاملة (Mock Exams)</h2>
+                <form id="exam-form" onsubmit="addExamScore(event)" class="grid grid-cols-1 sm:grid-cols-4 gap-3 bg-black/30 p-4 rounded-xl border border-zinc-800 mb-4">
+                    <input type="text" id="ex-subject" placeholder="اسم المادة الامتحان" required class="bg-[#18181b] border border-zinc-700 rounded-lg p-2 text-xs text-white focus:outline-none">
+                    <input type="number" id="ex-score" placeholder="الدرجة من 100" min="0" max="100" required class="bg-[#18181b] border border-zinc-700 rounded-lg p-2 text-xs text-white focus:outline-none">
+                    <input type="text" id="ex-note" placeholder="ملاحظات تدوين الخطأ" class="bg-[#18181b] border border-zinc-700 rounded-lg p-2 text-xs text-white focus:outline-none">
+                    <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 rounded-lg text-xs transition-all">إضافة النتيجة</button>
+                </form>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right border-collapse">
+                        <thead>
+                            <tr class="border-b border-zinc-800 text-xs text-zinc-400">
+                                <th class="pb-2">المادة</th><th class="pb-2">الدرجة</th><th class="pb-2">الحالة</th><th class="pb-2">الملاحظة</th><th class="pb-2 text-left">حذف</th>
+                            </tr>
+                        </thead>
+                        <tbody id="exams-table-body" class="text-xs text-zinc-300 divide-y divide-zinc-800/40"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Core Intelligent Software Engine Script -->
+    <script>
+        // Pre-Populated Master Iraq Curriculum with Custom Verified YouTube Search Targets
+        const curriculum = [
+            { id: "math", name: "الرياضيات 📐 (أ. حيدر عبد الأئمة)", teacher: "حيدر عبد الائمة", chapters: ["الفصل الأول: الأعداد المركبة", "الفصل الثاني: القطوع المخروطية", "الفصل الثالث: تطبيقات التفاضل", "الفصل الرابع: التكامل وتطبيقاته", "الفصل الخامس: المعادلات التفاضلية", "الفصل السادس: الهندسة المجسمة"] },
+            { id: "physics", name: "الفيزياء ⚡ (أ. حسن عبد الكاظم)", teacher: "حسن عبد الكاظم الربيعي", chapters: ["الفصل الأول: المتسعات", "الفصل الثاني: الحث الكهرومغناطيسي", "الفصل الثالث: التيار المتناوب", "الفصل الرابع: البصريات الفيزيائية", "الفصل الخامس: الفيزياء الحديثة", "الفصل السادس: الكترونيات الحالة الصلبة", "الفصل السابع: الأطياف الذرية والليزر", "الفصل الثامن: الفيزياء النووية"] },
+            { id: "chemistry", name: "الكيمياء 🧪 (أ. مهند السوداني)", teacher: "مهند السوداني", chapters: ["الفصل الأول: الثرموداينمك", "الفصل الثاني: الاتزان الكيميائي", "الفصل الثالث: الاتزان الأيوني", "الفصل الرابع: الكيمياء الكهربائية", "الفصل الخامس: الكيمياء التناسقية", "الفصل السادس: طرائق التحليل الكيميائي", "الفصل السابع: الكيمياء العضوية", "الفصل الثامن: الكيمياء الحياتية"] },
+            { id: "biology", name: "الأحياء 🧬 (أ. أسعد الأسدي)", teacher: "اسعد الاسدي", chapters: ["الفصل الأول: الخلية", "الفصل الثاني: الأنسجة", "الفصل الثالث: التكاثر", "الفصل الرابع: التكوين الجنيني", "الفصل الخامس: علم الوراثة"] },
+            { id: "arabic", name: "اللغة العربية 📚 (أ. حمزة الجابري)", teacher: "حمزة الجابري", chapters: ["قواعد: أسلوب الاستفهام", "قواعد: أسلوب النفي", "قواعد: أسلوب التقديم والتأخير", "قواعد: أسلوب التوكيد", "قواعد: أساليب المدح والذم والتعجب والنداء", "الأدب والنصوص: المنهج كامل"] },
+            { id: "english", name: "اللغة الإنكليزية 🇬🇧 (أ. سجاد العبيدي)", teacher: "سجاد العبيدي", chapters: ["الوحدة الأولى والثانية كاملة", "الوحدة الثالثة والرابعة كاملة", "الوحدة الخامسة والسادسة", "الوحدة السابعة والآداب المقررة"] },
+            { id: "islamic", name: "التربية الإسلامية 🕋 (أ. ساجد العكيلي)", teacher: "ساجد العكيلي", chapters: ["أحكام التلاوة والقرآن الكريم", "الوحدات الأولى والثانية", "الوحدات الثالثة والرابعة والخامسة"] }
+        ];
+
+        // Fixed 12-Week Strategic Summer Plan Targets
+        const weeklyTargets = [
+            "الأسبوع 1: رياضيات (الفصل 1 أول نصف) + فيزياء (المتسعات المنفردة والمجموعات) + كيمياء (مفاهيم الثرموداينمك الأولية).",
+            "الأسبوع 2: رياضيات (تكملة ومراجعة الفصل 1 الأعداد المركبة) + أحياء (عضيات الخلية الحية نصفها الأول) + عربي (الاستفهام أدوات الإعراب).",
+            "الأسبوع 3: كيمياء (قانون هيس وعلاقة كبس وقفل الفصل 1) + فيزياء (ربط التوالي والتوازي وثابت العزل للفصل 1).",
+            "الأسبوع 4: رياضيات (الانطلاق بالفصل الثاني القطوع المخروطية: المكافئ والناقص) + أحياء (الخلية: الأنشطة والانقسامات وقفل الفصل 1).",
+            "الأسبوع 5: فيزياء (الانطلاق بالفصل الثاني الحث الكهرومغناطيسي وقانون فراداي) + كيمياء (الفصل الثاني الاتزان الكيميائي وثابت Kc/Kp).",
+            "الأسبوع 6: عربي (الانطلاق بأسلوب النفي وأدواته بالكامل) + إنكليزي (الوحدة الأولى قواعد وقطع مصطفى وزيد).",
+            "الأسبوع 7: رياضيات (تكملة القطع الزائد والربط وقفل الفصل الثاني) + كيمياء (قاعدة لوشاتيليه وقفل ومراجعة الفصل الثاني).",
+            "الأسبوع 8: فيزياء (قانون لنز والحث الذاتي والمتبادل وقفل الفصل الثاني) + أحياء (دخول الفصل الثاني الأنسجة النباتية والحيوانية).",
+            "الأسبوع 9: رياضيات (بدء الفصل الثالث تطبيقات التفاضل والمشتقات ورول) + إنكليزي (الوحدة الثانية القواعد والقطع الأمنية).",
+            "الأسبوع 10: كيمياء (دخول المادة الأهم الفصل الثالث الاتزان الأيوني، وبفر الهيدروجيني والمذيبات والمحاليل).",
+            "الأسبوع 11: فيزياء (بدء الفصل الثالث التيار المتناوب وربط الـ RLC والتوالي والتوازي بالتفصيل).",
+            "الأسبوع 12: مراجعة شاملة تراكمية لكل ما تم قفله ودراسته في الأسابيع الماضية واجتياز امتحانات الفاينل الصيفية بنجاح."
+        ];
+
+        let errorBank = [];
+        let examScores = [];
+        let timerInterval = null;
+        let timeRemaining = 1500;
+        let isTimerRunning = false;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            initCurriculumHTML();
+            initWeeklyTableHTML();
+            loadStoredData();
+            initLiveCountdown();
+            renderErrorBank();
+            renderExamsTable();
+            updateAllProgressMetrics();
+        });
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-emerald-500', 'text-black', 'shadow-lg', 'shadow-emerald-500/10');
+                btn.classList.add('text-zinc-400', 'hover:bg-zinc-800', 'hover:text-white');
+            });
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-zinc-400', 'hover:bg-zinc-800', 'hover:text-white');
+                activeBtn.classList.add('bg-emerald-500', 'text-black', 'shadow-lg', 'shadow-emerald-500/10');
+            }
+        }
+
+        function initLiveCountdown() {
+            const examTarget = new Date("June 15, 2027 08:00:00").getTime();
+            function tick() {
+                const now = new Date().getTime();
+                const diff = examTarget - now;
+                if (diff < 0) { document.getElementById("countdown").innerText = "بدأت الملحمة!"; return; }
+                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                document.getElementById("countdown").innerText = `${d}d ${h}h ${m}m`;
+            }
+            tick(); setInterval(tick, 60000);
+        }
+
+        function initCurriculumHTML() {
+            const container = document.getElementById("subjects-container");
+            container.innerHTML = "";
+            curriculum.forEach(sub => {
+                let html = `
+                    <div class="bg-black/30 rounded-xl border border-zinc-800 overflow-hidden">
+                        <div class="p-4 flex items-center justify-between bg-zinc-900/40 border-b border-zinc-800/60">
+                            <span class="font-bold text-white text-sm md:text-base">${sub.name}</span>
+                            <span class="text-xs font-mono font-bold bg-zinc-800 text-emerald-400 px-2.5 py-1 rounded border border-zinc-700" id="ratio-${sub.id}">0%</span>
+                        </div>
+                        <div class="p-4 space-y-3">
+                `;
+                sub.chapters.forEach((chap, cIdx) => {
+                    const searchString = `${sub.teacher} ${chap}`;
+                    const encUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(searchString)}`;
+                    html += `
+                        <div class="bg-[#18181b]/50 p-3 rounded-lg border border-zinc-800/40 flex flex-col md:flex-row md:items-center justify-between gap-3">
+                            <div class="flex-1">
+                                <h4 class="text-xs font-bold text-teal-400 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-play text-[9px]"></i> ${chap}
+                                </h4>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-2">
+                                    <label class="flex items-center gap-2 bg-black/20 p-2 rounded text-[11px] cursor-pointer text-zinc-300">
+                                        <input type="checkbox" id="chk-${sub.id}-${cIdx}-1" onchange="checkboxStateChanged()" class="curric-chk w-3.5 h-3.5 text-emerald-500 bg-zinc-900 border-zinc-700 rounded">
+                                        <span>إتمام المحاضرات والكتاب</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 bg-black/20 p-2 rounded text-[11px] cursor-pointer text-zinc-300">
+                                        <input type="checkbox" id="chk-${sub.id}-${cIdx}-2" onchange="checkboxStateChanged()" class="curric-chk w-3.5 h-3.5 text-emerald-500 bg-zinc-900 border-zinc-700 rounded">
+                                        <span>قفل الوزاريات (2014-2026)</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 bg-black/20 p-2 rounded text-[11px] cursor-pointer text-zinc-300">
+                                        <input type="checkbox" id="chk-${sub.id}-${cIdx}-3" onchange="checkboxStateChanged()" class="curric-chk w-3.5 h-3.5 text-emerald-500 bg-zinc-900 border-zinc-700 rounded">
+                                        <span>مراجعة وامتحان فاينل</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <a href="${encUrl}" target="_blank" class="bg-red-600/10 text-red-400 hover:bg-red-600 hover:text-white font-bold px-3 py-2 rounded-lg text-xs transition-all flex items-center justify-center gap-1 shrink-0 border border-red-500/20">
+                                <i class="fa-brands fa-youtube"></i> المحاضرات 📺
+                            </a>
+                        </div>
+                    `;
+                });
+                html += `</div></div>`;
+                container.innerHTML += html;
+            });
+        }
+
+        function initWeeklyTableHTML() {
+            const tbody = document.getElementById("weekly-table-body");
+            tbody.innerHTML = "";
+            weeklyTargets.forEach((tgt, idx) => {
+                tbody.innerHTML += `
+                    <tr class="border-b border-zinc-800/40 hover:bg-zinc-900/10">
+                        <td class="p-3 font-bold text-white font-mono">W${idx+1}</td>
+                        <td class="p-3 text-zinc-300 text-xs">${tgt}</td>
+                        <td class="p-3 text-center">
+                            <input type="checkbox" id="week-chk-${idx}" onchange="saveWeeklyChks()" class="week-chk w-4 h-4 text-emerald-500 bg-zinc-900 border-zinc-700 rounded">
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function saveHourlySlots() {
+            let done = 0;
+            for(let i=1; i<=6; i++) {
+                const el = document.getElementById(`hour-slot-${i}`);
+                if(el) { localStorage.setItem(`hour-slot-${i}`, el.checked); if(el.checked) done++; }
+            }
+            document.getElementById("hourly-ratio").innerText = `${done} / 6 فترات`;
+        }
+
+        function saveWeeklyChks() {
+            for(let i=0; i<weeklyTargets.length; i++) {
+                const el = document.getElementById(`week-chk-${i}`);
+                if(el) localStorage.setItem(`week-chk-${i}`, el.checked);
+            }
+        }
+
+        function saveHabits() {
+            for(let i=1; i<=4; i++) {
+                const el = document.getElementById(`habit-${i}`);
+                if(el) localStorage.setItem(`habit-${i}`, el.checked);
+            }
+        }
+
+        function checkboxStateChanged() {
+            document.querySelectorAll('.curric-chk').forEach(chk => { localStorage.setItem(chk.id, chk.checked); });
+            updateAllProgressMetrics();
+        }
+
+        function loadStoredData() {
+            // Hourly
+            let hDone = 0;
+            for(let i=1; i<=6; i++) {
+                const el = document.getElementById(`hour-slot-${i}`);
+                if(el && localStorage.getItem(`hour-slot-${i}`) === "true") { el.checked = true; hDone++; }
+            }
+            document.getElementById("hourly-ratio").innerText = `${hDone} / 6 فترات`;
+
+            // Weekly
+            for(let i=0; i<weeklyTargets.length; i++) {
+                const el = document.getElementById(`week-chk-${i}`);
+                if(el && localStorage.getItem(`week-chk-${i}`) === "true") el.checked = true;
+            }
+
+            // Habits
+            for(let i=1; i<=4; i++) {
+                const el = document.getElementById(`habit-${i}`);
+                if(el && localStorage.getItem(`habit-${i}`) === "true") el.checked = true;
+            }
+
+            // Matrix Chks
+            document.querySelectorAll('.curric-chk').forEach(chk => { if(localStorage.getItem(chk.id) === "true") chk.checked = true; });
+
+            if(localStorage.getItem("errorBank")) errorBank = JSON.parse(localStorage.getItem("errorBank"));
+            if(localStorage.getItem("examScores")) examScores = JSON.parse(localStorage.getItem("examScores"));
+        }
+
+        function updateAllProgressMetrics() {
+            let grandTotal = 0, grandChecked = 0;
+            curriculum.forEach(sub => {
+                let subTotal = 0, subChecked = 0;
+                sub.chapters.forEach((_, cIdx) => {
+                    for(let i=1; i<=3; i++) {
+                        grandTotal++; subTotal++;
+                        const el = document.getElementById(`chk-${sub.id}-${cIdx}-${i}`);
+                        if(el && el.checked) { grandChecked++; subChecked++; }
+                    }
+                });
+                const subPct = subTotal > 0 ? Math.round((subChecked / subTotal) * 100) : 0;
+                const ratioEl = document.getElementById(`ratio-${sub.id}`);
+                if (ratioEl) ratioEl.innerText = `${subPct}%`;
+            });
+            const overallPct = grandTotal > 0 ? Math.round((grandChecked / grandTotal) * 100) : 0;
+            document.getElementById("global-progress-txt").innerText = `${overallPct}%`;
+            document.getElementById("global-progress-bar").style.width = `${overallPct}%`;
+        }
+
+        function renderErrorBank() {
+            const container = document.getElementById("errors-list-container"); container.innerHTML = "";
+            if(errorBank.length === 0) { container.innerHTML = `<div class="text-zinc-500 text-xs py-4 text-center">لا توجد ثغرات حالية. استمر بالتركيز الفولاذي!</div>`; return; }
+            errorBank.forEach(err => {
+                container.innerHTML += `
+                    <div class="flex items-center justify-between p-3 bg-zinc-900/50 border border-zinc-800 rounded-xl">
+                        <div class="flex items-center gap-3">
+                            <span class="text-[10px] font-bold bg-rose-500/10 text-rose-400 border border-rose-500/20 px-2 py-0.5 rounded">${err.subject}</span>
+                            <p class="text-xs font-semibold text-zinc-200">${err.desc}</p>
+                        </div>
+                        <button onclick="deleteError(${err.id})" class="text-zinc-500 hover:text-rose-400 p-1 transition-all"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                    </div>
+                `;
+            });
+        }
+
+        function addErrorCard(e) {
+            e.preventDefault();
+            const sub = document.getElementById("err-subject").value;
+            const desc = document.getElementById("err-desc").value;
+            errorBank.push({ id: Date.now(), subject: sub, desc: desc });
+            localStorage.setItem("errorBank", JSON.stringify(errorBank));
+            document.getElementById("err-desc").value = ""; renderErrorBank();
+        }
+
+        function deleteError(id) { errorBank = errorBank.filter(x => x.id !== id); localStorage.setItem("errorBank", JSON.stringify(errorBank)); renderErrorBank(); }
+
+        function renderExamsTable() {
+            const tbody = document.getElementById("exams-table-body"); tbody.innerHTML = "";
+            if(examScores.length === 0) { tbody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-zinc-500">لا توجد نتائج امتحانات شاملة مسجلة بعد.</td></tr>`; return; }
+            examScores.forEach(ex => {
+                const statusColor = ex.score >= 95 ? "text-emerald-400 bg-emerald-500/10" : "text-amber-400 bg-amber-500/10";
+                const statusTxt = ex.score >= 95 ? "معدل 100 مضمون" : "تحتاج لمراجعة أخطائك";
+                tbody.innerHTML += `
+                    <tr class="border-b border-zinc-800/40">
+                        <td class="py-3 font-bold text-white">${ex.subject}</td>
+                        <td class="py-3 font-mono font-bold">${ex.score} / 100</td>
+                        <td class="py-3"><span class="px-2 py-0.5 rounded border text-[10px] font-bold ${statusColor}">${statusTxt}</span></td>
+                        <td class="py-3 text-zinc-400 max-w-xs truncate">${ex.note || '-'}</td>
+                        <td class="py-3 text-left"><button onclick="deleteExamScore(${ex.id})" class="text-zinc-500 hover:text-rose-400 p-1"><i class="fa-solid fa-trash-can"></i></button></td>
+                    </tr>
+                `;
+            });
+        }
+
+        function addExamScore(e) {
+            e.preventDefault();
+            const sub = document.getElementById("ex-subject").value; const score = parseInt(document.getElementById("ex-score").value); const note = document.getElementById("ex-note").value;
+            examScores.push({ id: Date.now(), subject: sub, score: score, note: note });
+            localStorage.setItem("examScores", JSON.stringify(examScores));
+            document.getElementById("ex-subject").value = ""; document.getElementById("ex-score").value = ""; document.getElementById("ex-note").value = "";
+            renderExamsTable();
+        }
+
+        function deleteExamScore(id) { examScores = examScores.filter(x => x.id !== id); localStorage.setItem("examScores", JSON.stringify(examScores)); renderExamsTable(); }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(timeRemaining / 60).toString().padStart(2, '0');
+            const secs = (timeRemaining % 60).toString().padStart(2, '0');
+            document.getElementById("timer-display").innerText = `${mins}:${secs}`;
+        }
+        function startTimer() {
+            if (isTimerRunning) return; isTimerRunning = true;
+            timerInterval = setInterval(() => {
+                if (timeRemaining > 0) { timeRemaining--; updateTimerDisplay(); } 
+                else { clearInterval(timerInterval); isTimerRunning = false; alert("انتهت جلسة التركيز المخصصة! خذ قسطاً من الراحة."); timeRemaining = 1500; updateTimerDisplay(); }
+            }, 1000);
+        }
+        function pauseTimer() { clearInterval(timerInterval); isTimerRunning = false; }
+        function resetTimer() { clearInterval(timerInterval); isTimerRunning = false; timeRemaining = 1500; updateTimerDisplay(); }
+    </script>
+</body>
+</html>
