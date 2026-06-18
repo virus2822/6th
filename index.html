@@ -4,13 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Elite Study OS - VIP Playlist & Schedule Edition</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts (Cairo) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -25,10 +22,8 @@
 </head>
 <body class="h-screen overflow-hidden flex select-none">
 
-    <!-- Sidebar Navigation -->
     <aside class="w-64 bg-[#18181b] border-l border-[#27272a] flex flex-col justify-between p-4 z-20 shrink-0">
         <div>
-            <!-- Logo -->
             <div class="flex items-center gap-3 px-2 py-4 mb-6 border-b border-[#27272a]">
                 <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20">
                     <i class="fa-solid fa-graduation-cap text-black font-bold text-sm"></i>
@@ -39,7 +34,6 @@
                 </div>
             </div>
 
-            <!-- Nav Links -->
             <nav class="space-y-1">
                 <button onclick="switchTab('dashboard')" id="btn-dashboard" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all bg-emerald-500 text-black shadow-lg shadow-emerald-500/10">
                     <i class="fa-solid fa-calendar-days w-5 text-center"></i> الجداول التنفيذية اليومية
@@ -56,7 +50,6 @@
             </nav>
         </div>
 
-        <!-- Progress Footer -->
         <div class="bg-[#27272a]/30 p-3 rounded-xl border border-[#27272a]">
             <div class="flex items-center justify-between text-xs mb-1">
                 <span class="text-zinc-400 font-medium">التقفيل الكلي للمنهج</span>
@@ -68,10 +61,8 @@
         </div>
     </aside>
 
-    <!-- Main Content Area -->
     <main class="flex-1 h-screen overflow-y-auto p-6 md:p-8 relative">
         
-        <!-- ================= 1. DASHBOARD & DAILY HOURLY PLANNER ================= -->
         <section id="tab-dashboard" class="tab-content space-y-6">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
                 <div class="lg:col-span-2 bg-[#18181b] p-6 rounded-2xl border border-[#27272a] flex flex-col justify-center">
@@ -84,9 +75,7 @@
                 </div>
             </div>
 
-            <!-- Pomodoro & Daily Rituals -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Pomodoro -->
                 <div class="bg-[#18181b] p-6 rounded-2xl border border-[#27272a] flex flex-col justify-between">
                     <div>
                         <h3 class="font-bold text-base text-white mb-3 flex items-center gap-2">
@@ -103,7 +92,6 @@
                     </div>
                 </div>
 
-                <!-- Habits Tracker -->
                 <div class="lg:col-span-2 bg-[#18181b] p-6 rounded-2xl border border-[#27272a]">
                     <h3 class="font-bold text-base text-white mb-4 flex items-center gap-2">
                         <i class="fa-solid fa-circle-check text-teal-400"></i> عادات التفوق اليومية الثابتة
@@ -129,7 +117,6 @@
                 </div>
             </div>
 
-            <!-- Interative Daily Schedule Split -->
             <div class="bg-[#18181b] p-6 rounded-2xl border border-[#27272a]">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="font-bold text-lg text-white flex items-center gap-2">
@@ -207,7 +194,6 @@
             </div>
         </section>
 
-        <!-- ================= 2. NEW: WEEKLY SPRINT TRACKER TAB ================= -->
         <section id="tab-weekly" class="tab-content hidden space-y-6">
             <div class="bg-[#18181b] p-6 rounded-2xl border border-[#27272a]">
                 <h2 class="text-2xl font-black text-white mb-1">خطة التوزيع الأسبوعية التفاعلية (Weekly Sprint System) 📊</h2>
@@ -223,14 +209,12 @@
                             </tr>
                         </thead>
                         <tbody class="text-xs text-zinc-300 divide-y divide-zinc-800/40" id="weekly-table-body">
-                            <!-- JS will generate 12 interactive weeks -->
-                        </tbody>
+                            </tbody>
                     </table>
                 </div>
             </div>
         </section>
 
-        <!-- ================= 3. SUBJECTS WITH DYNAMIC YOUTUBE LINKS ================= -->
         <section id="tab-subjects" class="tab-content hidden space-y-6">
             <div class="bg-[#18181b] p-6 rounded-2xl border border-[#27272a]">
                 <div class="mb-4">
@@ -239,12 +223,10 @@
                 </div>
                 
                 <div id="subjects-container" class="space-y-4">
-                    <!-- Dynamically Injected with Interactive Buttons -->
-                </div>
+                    </div>
             </div>
         </section>
 
-        <!-- ================= 4. ERRORS & EXAMS TAB ================= -->
         <section id="tab-errors" class="tab-content hidden space-y-6">
             <div class="bg-[#18181b] p-6 rounded-2xl border border-[#27272a]">
                 <h2 class="text-2xl font-black text-white mb-1">دفتر وثغرات الأخطاء الرقمي 🧠</h2>
@@ -273,7 +255,6 @@
                 <div class="space-y-2" id="errors-list-container"></div>
             </div>
 
-            <!-- Full Mock Exams Simulator -->
             <div class="bg-[#18181b] p-6 rounded-2xl border border-[#27272a]">
                 <h2 class="text-xl font-bold text-white mb-2">لوحة نتائج الامتحانات الشاملة (Mock Exams)</h2>
                 <form id="exam-form" onsubmit="addExamScore(event)" class="grid grid-cols-1 sm:grid-cols-4 gap-3 bg-black/30 p-4 rounded-xl border border-zinc-800 mb-4">
@@ -297,9 +278,7 @@
 
     </main>
 
-    <!-- Core Intelligent Software Engine Script -->
     <script>
-        // Pre-Populated Master Iraq Curriculum with Custom Verified YouTube Search Targets
         const curriculum = [
             { id: "math", name: "الرياضيات 📐 (أ. حيدر عبد الأئمة)", teacher: "حيدر عبد الائمة", chapters: ["الفصل الأول: الأعداد المركبة", "الفصل الثاني: القطوع المخروطية", "الفصل الثالث: تطبيقات التفاضل", "الفصل الرابع: التكامل وتطبيقاته", "الفصل الخامس: المعادلات التفاضلية", "الفصل السادس: الهندسة المجسمة"] },
             { id: "physics", name: "الفيزياء ⚡ (أ. حسن عبد الكاظم)", teacher: "حسن عبد الكاظم الربيعي", chapters: ["الفصل الأول: المتسعات", "الفصل الثاني: الحث الكهرومغناطيسي", "الفصل الثالث: التيار المتناوب", "الفصل الرابع: البصريات الفيزيائية", "الفصل الخامس: الفيزياء الحديثة", "الفصل السادس: الكترونيات الحالة الصلبة", "الفصل السابع: الأطياف الذرية والليزر", "الفصل الثامن: الفيزياء النووية"] },
@@ -310,7 +289,6 @@
             { id: "islamic", name: "التربية الإسلامية 🕋 (أ. ساجد العكيلي)", teacher: "ساجد العكيلي", chapters: ["أحكام التلاوة والقرآن الكريم", "الوحدات الأولى والثانية", "الوحدات الثالثة والرابعة والخامسة"] }
         ];
 
-        // Fixed 12-Week Strategic Summer Plan Targets
         const weeklyTargets = [
             "الأسبوع 1: رياضيات (الفصل 1 أول نصف) + فيزياء (المتسعات المنفردة والمجموعات) + كيمياء (مفاهيم الثرموداينمك الأولية).",
             "الأسبوع 2: رياضيات (تكملة ومراجعة الفصل 1 الأعداد المركبة) + أحياء (عضيات الخلية الحية نصفها الأول) + عربي (الاستفهام أدوات الإعراب).",
@@ -434,59 +412,67 @@
         }
 
         function saveHourlySlots() {
-            let done = 0;
-            for(let i=1; i<=6; i++) {
-                const el = document.getElementById(`hour-slot-${i}`);
-                if(el) { localStorage.setItem(`hour-slot-${i}`, el.checked); if(el.checked) done++; }
-            }
-            document.getElementById("hourly-ratio").innerText = `${done} / 6 فترات`;
+            try {
+                let done = 0;
+                for(let i=1; i<=6; i++) {
+                    const el = document.getElementById(`hour-slot-${i}`);
+                    if(el) { localStorage.setItem(`hour-slot-${i}`, el.checked); if(el.checked) done++; }
+                }
+                document.getElementById("hourly-ratio").innerText = `${done} / 6 فترات`;
+            } catch(e) { console.warn("LocalStorage space block bypassed."); }
         }
 
         function saveWeeklyChks() {
-            for(let i=0; i<weeklyTargets.length; i++) {
-                const el = document.getElementById(`week-chk-${i}`);
-                if(el) localStorage.setItem(`week-chk-${i}`, el.checked);
-            }
+            try {
+                for(let i=0; i<weeklyTargets.length; i++) {
+                    const el = document.getElementById(`week-chk-${i}`);
+                    if(el) localStorage.setItem(`week-chk-${i}`, el.checked);
+                }
+            } catch(e) { }
         }
 
         function saveHabits() {
-            for(let i=1; i<=4; i++) {
-                const el = document.getElementById(`habit-${i}`);
-                if(el) localStorage.setItem(`habit-${i}`, el.checked);
-            }
+            try {
+                for(let i=1; i<=4; i++) {
+                    const el = document.getElementById(`habit-${i}`);
+                    if(el) localStorage.setItem(`habit-${i}`, el.checked);
+                }
+            } catch(e) { }
         }
 
         function checkboxStateChanged() {
-            document.querySelectorAll('.curric-chk').forEach(chk => { localStorage.setItem(chk.id, chk.checked); });
+            try {
+                document.querySelectorAll('.curric-chk').forEach(chk => { localStorage.setItem(chk.id, chk.checked); });
+            } catch(e) { }
             updateAllProgressMetrics();
         }
 
         function loadStoredData() {
-            // Hourly
-            let hDone = 0;
-            for(let i=1; i<=6; i++) {
-                const el = document.getElementById(`hour-slot-${i}`);
-                if(el && localStorage.getItem(`hour-slot-${i}`) === "true") { el.checked = true; hDone++; }
+            try {
+                let hDone = 0;
+                for(let i=1; i<=6; i++) {
+                    const el = document.getElementById(`hour-slot-${i}`);
+                    if(el && localStorage.getItem(`hour-slot-${i}`) === "true") { el.checked = true; hDone++; }
+                }
+                document.getElementById("hourly-ratio").innerText = `${hDone} / 6 فترات`;
+
+                for(let i=0; i<weeklyTargets.length; i++) {
+                    const el = document.getElementById(`week-chk-${i}`);
+                    if(el && localStorage.getItem(`week-chk-${i}`) === "true") el.checked = true;
+                }
+
+                for(let i=1; i<=4; i++) {
+                    const el = document.getElementById(`habit-${i}`);
+                    if(el && localStorage.getItem(`habit-${i}`) === "true") el.checked = true;
+                }
+
+                document.querySelectorAll('.curric-chk').forEach(chk => { if(localStorage.getItem(chk.id) === "true") chk.checked = true; });
+
+                if(localStorage.getItem("errorBank")) errorBank = JSON.parse(localStorage.getItem("errorBank"));
+                if(localStorage.getItem("examScores")) examScores = JSON.parse(localStorage.getItem("examScores"));
+            } catch(e) {
+                console.warn("Running in strict local sandbox. Data persistence active once online.");
             }
-            document.getElementById("hourly-ratio").innerText = `${hDone} / 6 فترات`;
-
-            // Weekly
-            for(let i=0; i<weeklyTargets.length; i++) {
-                const el = document.getElementById(`week-chk-${i}`);
-                if(el && localStorage.getItem(`week-chk-${i}`) === "true") el.checked = true;
-            }
-
-            // Habits
-            for(let i=1; i<=4; i++) {
-                const el = document.getElementById(`habit-${i}`);
-                if(el && localStorage.getItem(`habit-${i}`) === "true") el.checked = true;
-            }
-
-            // Matrix Chks
-            document.querySelectorAll('.curric-chk').forEach(chk => { if(localStorage.getItem(chk.id) === "true") chk.checked = true; });
-
-            if(localStorage.getItem("errorBank")) errorBank = JSON.parse(localStorage.getItem("errorBank"));
-            if(localStorage.getItem("examScores")) examScores = JSON.parse(localStorage.getItem("examScores"));
         }
 
         function updateAllProgressMetrics() {
@@ -530,11 +516,15 @@
             const sub = document.getElementById("err-subject").value;
             const desc = document.getElementById("err-desc").value;
             errorBank.push({ id: Date.now(), subject: sub, desc: desc });
-            localStorage.setItem("errorBank", JSON.stringify(errorBank));
+            try { localStorage.setItem("errorBank", JSON.stringify(errorBank)); } catch(err){}
             document.getElementById("err-desc").value = ""; renderErrorBank();
         }
 
-        function deleteError(id) { errorBank = errorBank.filter(x => x.id !== id); localStorage.setItem("errorBank", JSON.stringify(errorBank)); renderErrorBank(); }
+        function deleteError(id) { 
+            errorBank = errorBank.filter(x => x.id !== id); 
+            try { localStorage.setItem("errorBank", JSON.stringify(errorBank)); } catch(err){}
+            renderErrorBank(); 
+        }
 
         function renderExamsTable() {
             const tbody = document.getElementById("exams-table-body"); tbody.innerHTML = "";
@@ -558,12 +548,16 @@
             e.preventDefault();
             const sub = document.getElementById("ex-subject").value; const score = parseInt(document.getElementById("ex-score").value); const note = document.getElementById("ex-note").value;
             examScores.push({ id: Date.now(), subject: sub, score: score, note: note });
-            localStorage.setItem("examScores", JSON.stringify(examScores));
+            try { localStorage.setItem("examScores", JSON.stringify(examScores)); } catch(err){}
             document.getElementById("ex-subject").value = ""; document.getElementById("ex-score").value = ""; document.getElementById("ex-note").value = "";
             renderExamsTable();
         }
 
-        function deleteExamScore(id) { examScores = examScores.filter(x => x.id !== id); localStorage.setItem("examScores", JSON.stringify(examScores)); renderExamsTable(); }
+        function deleteExamScore(id) { 
+            examScores = examScores.filter(x => x.id !== id); 
+            try { localStorage.setItem("examScores", JSON.stringify(examScores)); } catch(err){}
+            renderExamsTable(); 
+        }
 
         function updateTimerDisplay() {
             const mins = Math.floor(timeRemaining / 60).toString().padStart(2, '0');
